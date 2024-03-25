@@ -7,6 +7,8 @@ echo -e "\nWelcome to My Salon, how can I help you?\n"
 
 MAIN_FUNCTION() {
 
+#echo -e "1) cut\n2) color\n3) perm\n4) style\n5) trim"
+
 MAIN_MENU
 
 # get service name
@@ -77,7 +79,7 @@ if [[ $1 ]]
   do
 	  if [[ $SERVICE != "name" ]]
 	  then
-		  echo "$ID) $SERVICE"
+		  echo "$(echo $ID | sed -r 's/^ *| *$//g')) $(echo $SERVICE | sed -r 's/^ *| *$//g')"
           fi
   done
 	read SERVICE_ID_SELECTED
