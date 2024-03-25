@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.18 (Ubuntu 12.18-0ubuntu0.20.04.1)
--- Dumped by pg_dump version 12.18 (Ubuntu 12.18-0ubuntu0.20.04.1)
+-- Dumped from database version 12.17 (Ubuntu 12.17-1.pgdg22.04+1)
+-- Dumped by pg_dump version 12.17 (Ubuntu 12.17-1.pgdg22.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -48,9 +48,9 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.appointments (
-    customer_id integer NOT NULL,
-    service_id integer,
     appointment_id integer NOT NULL,
+    service_id integer,
+    customer_id integer,
     "time" character varying(50)
 );
 
@@ -77,28 +77,6 @@ ALTER TABLE public.appointments_appointment_id_seq OWNER TO freecodecamp;
 --
 
 ALTER SEQUENCE public.appointments_appointment_id_seq OWNED BY public.appointments.appointment_id;
-
-
---
--- Name: appointments_customer_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
---
-
-CREATE SEQUENCE public.appointments_customer_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.appointments_customer_id_seq OWNER TO freecodecamp;
-
---
--- Name: appointments_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
---
-
-ALTER SEQUENCE public.appointments_customer_id_seq OWNED BY public.appointments.customer_id;
 
 
 --
@@ -171,13 +149,6 @@ ALTER SEQUENCE public.services_service_id_seq OWNED BY public.services.service_i
 
 
 --
--- Name: appointments customer_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.appointments ALTER COLUMN customer_id SET DEFAULT nextval('public.appointments_customer_id_seq'::regclass);
-
-
---
 -- Name: appointments appointment_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
@@ -202,24 +173,15 @@ ALTER TABLE ONLY public.services ALTER COLUMN service_id SET DEFAULT nextval('pu
 -- Data for Name: appointments; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.appointments VALUES (52, 4, 63, '14');
-INSERT INTO public.appointments VALUES (52, 2, 70, '14');
-INSERT INTO public.appointments VALUES (63, 1, 77, '14');
-INSERT INTO public.appointments VALUES (52, 1, 84, '13');
-INSERT INTO public.appointments VALUES (52, 3, 91, '13');
-INSERT INTO public.appointments VALUES (74, 3, 92, '13');
-INSERT INTO public.appointments VALUES (74, 3, 93, '23');
-INSERT INTO public.appointments VALUES (74, 3, 94, '23');
-INSERT INTO public.appointments VALUES (52, 3, 101, '3');
+INSERT INTO public.appointments VALUES (1, 1, 1, '10:30');
+INSERT INTO public.appointments VALUES (2, 2, 1, '11am');
 
 
 --
 -- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.customers VALUES (52, '555', 'Gino');
-INSERT INTO public.customers VALUES (63, '8', 'LO');
-INSERT INTO public.customers VALUES (74, '7', 'ciao');
+INSERT INTO public.customers VALUES (1, '555-555-5555', 'Fabio');
 
 
 --
@@ -237,21 +199,14 @@ INSERT INTO public.services VALUES (5, 'trim');
 -- Name: appointments_appointment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.appointments_appointment_id_seq', 107, true);
-
-
---
--- Name: appointments_customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
---
-
-SELECT pg_catalog.setval('public.appointments_customer_id_seq', 1, false);
+SELECT pg_catalog.setval('public.appointments_appointment_id_seq', 8, true);
 
 
 --
 -- Name: customers_customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.customers_customer_id_seq', 84, true);
+SELECT pg_catalog.setval('public.customers_customer_id_seq', 6, true);
 
 
 --
@@ -294,19 +249,19 @@ ALTER TABLE ONLY public.services
 
 
 --
+-- Name: appointments appointments_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.appointments
+    ADD CONSTRAINT appointments_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(customer_id);
+
+
+--
 -- Name: appointments appointments_service_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.appointments
     ADD CONSTRAINT appointments_service_id_fkey FOREIGN KEY (service_id) REFERENCES public.services(service_id);
-
-
---
--- Name: appointments fk_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.appointments
-    ADD CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES public.customers(customer_id);
 
 
 --
